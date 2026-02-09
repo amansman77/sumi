@@ -171,6 +171,8 @@ import Layout from '../layouts/Layout.astro';
 </style>
 
 <script>
+  import { getPostHogCommonProperties } from '../lib/posthog/common';
+
   const FORM = document.getElementById('interest-form') as HTMLFormElement;
   const FORM_CONTAINER = document.getElementById('form-container')!;
   const SUCCESS_PANEL = document.getElementById('success-panel')!;
@@ -184,25 +186,31 @@ import Layout from '../layouts/Layout.astro';
 
   function captureCtaClick(fromSection: string) {
     try {
-      (window as unknown as { posthog?: { capture: (e: string, p: Record<string, unknown>) => void } }).posthog?.capture('sumi_interest_cta_click', { from_section: fromSection });
+      (window as unknown as { posthog?: { capture: (e: string, p: Record<string, unknown>) => void } }).posthog?.capture('sumi_interest_cta_click', {
+        ...getPostHogCommonProperties(),
+        from_section: fromSection,
+      });
     } catch (_) {}
   }
 
   function captureSubmit(props: { willing_to_pay: boolean; interest_parts: string[] }) {
     try {
-      (window as unknown as { posthog?: { capture: (e: string, p: Record<string, unknown>) => void } }).posthog?.capture('sumi_interest_submit', props);
+      (window as unknown as { posthog?: { capture: (e: string, p: Record<string, unknown>) => void } }).posthog?.capture('sumi_interest_submit', {
+        ...getPostHogCommonProperties(),
+        ...props,
+      });
     } catch (_) {}
   }
 
   function captureSubmitSuccess() {
     try {
-      (window as unknown as { posthog?: { capture: (e: string) => void } }).posthog?.capture('sumi_interest_submit_success');
+      (window as unknown as { posthog?: { capture: (e: string, p: Record<string, unknown>) => void } }).posthog?.capture('sumi_interest_submit_success', getPostHogCommonProperties());
     } catch (_) {}
   }
 
   function captureSubmitError() {
     try {
-      (window as unknown as { posthog?: { capture: (e: string) => void } }).posthog?.capture('sumi_interest_submit_error');
+      (window as unknown as { posthog?: { capture: (e: string, p: Record<string, unknown>) => void } }).posthog?.capture('sumi_interest_submit_error', getPostHogCommonProperties());
     } catch (_) {}
   }
 

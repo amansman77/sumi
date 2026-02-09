@@ -80,11 +80,16 @@ import InterestCTA from '../components/InterestCTA.astro';
 </style>
 
 <script>
+  import { getPostHogCommonProperties } from '../lib/posthog/common';
+
   document.querySelectorAll('[data-cta="interest"]').forEach((el) => {
     el.addEventListener('click', () => {
       const from = (el as HTMLElement).dataset.fromSection ?? 'unknown';
       try {
-        (window as unknown as { posthog?: { capture: (e: string, p: Record<string, string>) => void } }).posthog?.capture('sumi_interest_cta_click', { from_section: from });
+        (window as unknown as { posthog?: { capture: (e: string, p: Record<string, string>) => void } }).posthog?.capture('sumi_interest_cta_click', {
+          ...getPostHogCommonProperties(),
+          from_section: from,
+        });
       } catch (_) {}
     });
   });
