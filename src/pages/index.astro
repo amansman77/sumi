@@ -1,0 +1,66 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="숨이" description="잘 쉬는 몸을 만드는 시간. 숨이는 라이프 이완 케어입니다.">
+  <section class="hero">
+    <h1>잘 쉬는 몸을 만드는 시간</h1>
+    <p class="tagline">숨이는 일상 속 이완과 쉼을 기록합니다. 치료나 교정이 아닌, 몸이 편해지는 순간들을 나눕니다.</p>
+    <a href="/journal" class="cta">기록 보기</a>
+  </section>
+
+  <section class="intro">
+    <h2>3세대를 위한 이완 케어</h2>
+    <ul class="generations">
+      <li><strong>여성</strong> — 하루를 마친 뒤에도 풀리지 않는 다리, 종아리부터의 이완</li>
+      <li><strong>아이</strong> — 성장기 아이들의 긴장된 다리, 잘 자는 날을 위한 준비</li>
+      <li><strong>부모</strong> — 아이를 돌보는 손과 몸, 먼저 챙겨야 할 나의 이완</li>
+    </ul>
+    <a href="/journal" class="link">저널에서 모두 보기</a>
+  </section>
+</Layout>
+
+<style>
+  .hero {
+    margin-bottom: 3rem;
+  }
+  .hero h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+  }
+  .tagline {
+    color: var(--color-muted);
+    margin: 0 0 1.5rem;
+    max-width: 36ch;
+  }
+  .cta {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    background: var(--color-text);
+    color: var(--color-bg);
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+  .cta:hover {
+    opacity: 0.9;
+  }
+  .intro h2 {
+    font-size: 1.25rem;
+    margin: 0 0 1rem;
+  }
+  .generations {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+  }
+  .generations li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .link {
+    color: var(--color-text);
+    text-decoration: underline;
+  }
+</style>

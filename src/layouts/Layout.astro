@@ -1,0 +1,105 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  canonical?: string;
+  ogImage?: string;
+}
+
+const { title, description, canonical, ogImage } = Astro.props;
+const siteUrl = import.meta.env.SITE_URL || Astro.url.origin;
+const fullTitle = `${title} | 숨이`;
+const fullDescription = description ?? '잘 쉬는 몸을 만드는 시간. 숨이는 라이프 이완 케어입니다.';
+const canonicalUrl = canonical ? new URL(canonical, siteUrl).href : new URL(Astro.url.pathname, siteUrl).href;
+const ogImageUrl = ogImage ? new URL(ogImage, siteUrl).href : new URL('/og-default.png', siteUrl).href;
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={fullDescription} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={fullDescription} />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content="ko_KR" />
+    <title>{fullTitle}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav">
+        <a href="/" class="brand">숨이</a>
+        <a href="/journal">기록</a>
+        <a href="/about">소개</a>
+      </nav>
+    </header>
+    <main class="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <p>잘 쉬는 몸을 만드는 시간 · 숨이</p>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --color-bg: #faf9f7;
+    --color-text: #1a1a1a;
+    --color-muted: #666;
+    --color-border: #e5e2de;
+    --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    background: var(--color-bg);
+    line-height: 1.6;
+  }
+  .site-header {
+    border-bottom: 1px solid var(--color-border);
+    padding: 1rem 1.5rem;
+  }
+  .nav {
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .nav a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+  .nav a:hover {
+    text-decoration: underline;
+  }
+  .brand {
+    font-weight: 700;
+  }
+  .main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    min-height: 60vh;
+  }
+  .site-footer {
+    border-top: 1px solid var(--color-border);
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--color-muted);
+    font-size: 0.9rem;
+  }
+</style>

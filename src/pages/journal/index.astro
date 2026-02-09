@@ -1,0 +1,129 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const allEntries = await getCollection('journal', ({ data }) => data.draft !== true);
+const entries = allEntries.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const categories = ['women', 'kids', 'parents'] as const;
+const categoryLabels: Record<string, string> = { women: '여성', kids: '아이', parents: '부모' };
+
+const uniqueTags = Array.from(new Set(entries.flatMap((e) => e.data.tags ?? [])));
+---
+
+<Layout title="기록" description="숨이 Growth Artifact — 잘 쉬는 몸을 만드는 기록 목록">
+  <h1>기록</h1>
+  <p class="lead">잘 쉬는 몸을 만드는 시간, 숨이의 기록입니다.</p>
+
+  <div class="filters">
+    <div class="category-chips">
+      {categories.map((cat) => (
+        <a href={`/journal?category=${cat}`} class="chip">{categoryLabels[cat]}</a>
+      ))}
+      <a href="/journal" class="chip">전체</a>
+    </div>
+    {uniqueTags.length > 0 && (
+      <div class="tag-chips">
+        {uniqueTags.slice(0, 12).map((tag) => (
+          <a href={`/journal?tag=${encodeURIComponent(tag)}`} class="chip tag">{tag}</a>
+        ))}
+      </div>
+    )}
+  </div>
+
+  <ul class="journal-list" id="journal-list">
+    {entries.map((entry) => (
+      <li data-category={entry.data.category} data-tags={JSON.stringify(entry.data.tags ?? [])}>
+        <a href={`/journal/${entry.data.slug}`}>
+          <span class="meta">{categoryLabels[entry.data.category] ?? entry.data.category} · {entry.data.date.toLocaleDateString('ko-KR')}</span>
+          <strong>{entry.data.title}</strong>
+          <p class="desc">{entry.data.description}</p>
+        </a>
+      </li>
+    ))}
+  </ul>
+</Layout>
+
+<style>
+  .lead {
+    color: var(--color-muted);
+    margin: 0 0 1.5rem;
+  }
+  .filters {
+    margin-bottom: 2rem;
+  }
+  .category-chips,
+  .tag-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .chip {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    background: var(--color-border);
+    border-radius: 999px;
+    font-size: 0.875rem;
+    text-decoration: none;
+    color: var(--color-text);
+  }
+  .chip:hover {
+    background: #ddd;
+  }
+  .chip.tag {
+    background: transparent;
+    border: 1px solid var(--color-border);
+    cursor: default;
+  }
+  .journal-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .journal-list li {
+    border-bottom: 1px solid var(--color-border);
+  }
+  .journal-list a {
+    display: block;
+    padding: 1.25rem 0;
+    color: inherit;
+    text-decoration: none;
+  }
+  .journal-list a:hover strong {
+    text-decoration: underline;
+  }
+  .meta {
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    margin-bottom: 0.25rem;
+  }
+  .desc {
+    margin: 0.35rem 0 0;
+    font-size: 0.9rem;
+    color: var(--color-muted);
+    line-height: 1.5;
+  }
+  .journal-list li[data-hidden="true"] {
+    display: none;
+  }
+</style>
+
+<script>
+  function applyFilters() {
+    const params = new URLSearchParams(window.location.search);
+    const category = params.get('category');
+    const tag = params.get('tag');
+    const list = document.getElementById('journal-list');
+    if (!list) return;
+    list.querySelectorAll('li').forEach((li) => {
+    const cat = li.getAttribute('data-category');
+    const tags = JSON.parse(li.getAttribute('data-tags') ?? '[]') as string[];
+    const matchCategory = !category || cat === category;
+    const matchTag = !tag || tags.includes(tag);
+    (li as HTMLElement).dataset.hidden = matchCategory && matchTag ? 'false' : 'true';
+    });
+  }
+  applyFilters();
+  window.addEventListener('popstate', applyFilters);
+</script>

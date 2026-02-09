@@ -1,0 +1,41 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="소개" description="숨이 소개 — 잘 쉬는 몸을 만드는 시간. 치료가 아닌 이완 케어를 지향합니다.">
+  <h1>소개</h1>
+  <p class="lead">잘 쉬는 몸을 만드는 시간, <strong>숨이</strong>입니다.</p>
+
+  <section>
+    <h2>철학</h2>
+    <p>숨이는 의료·치료·교정·성장 촉진 결과를 보장하지 않습니다. 대신, 일상 속에서 몸이 조금 더 편해지는 순간—이완과 쉼—을 기록하고 나눕니다.</p>
+  </section>
+
+  <section>
+    <h2>경계</h2>
+    <p>키 커짐, 통증 치료, 교정 등 결과 보장 문구는 사용하지 않습니다. 전문가 주장이나 전후 비교보다는 ‘기록’에 초점을 둡니다.</p>
+  </section>
+
+  <section>
+    <h2>문의</h2>
+    <p>궁금한 점이 있으시면 아래 채널로 연락해 주세요.</p>
+    <p><a href="/journal">기록 보기</a></p>
+  </section>
+</Layout>
+
+<style>
+  .lead {
+    margin-bottom: 2rem;
+  }
+  section {
+    margin-bottom: 2rem;
+  }
+  section h2 {
+    font-size: 1.1rem;
+    margin: 0 0 0.5rem;
+  }
+  a {
+    color: var(--color-text);
+    text-decoration: underline;
+  }
+</style>
