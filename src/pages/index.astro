@@ -1,12 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import InterestCTA from '../components/InterestCTA.astro';
 ---
 
 <Layout title="숨이" description="잘 쉬는 몸을 만드는 시간. 숨이는 라이프 이완 케어입니다.">
   <section class="hero">
     <h1>잘 쉬는 몸을 만드는 시간</h1>
-    <p class="tagline">숨이는 일상 속 이완과 쉼을 기록합니다. 치료나 교정이 아닌, 몸이 편해지는 순간들을 나눕니다.</p>
-    <a href="/journal" class="cta">기록 보기</a>
+    <p class="tagline">숨이는 일상 속 이완과 쉼을 기록합니다.</p>
+    <p class="tagline-sub">종아리와 발 마사지를 통해, 몸이 풀리는 순간도 만들어보고 있습니다.</p>
   </section>
 
   <section class="intro">
@@ -16,8 +17,11 @@ import Layout from '../layouts/Layout.astro';
       <li><strong>아이</strong> — 성장기 아이들의 긴장된 다리, 잘 자는 날을 위한 준비</li>
       <li><strong>부모</strong> — 아이를 돌보는 손과 몸, 먼저 챙겨야 할 나의 이완</li>
     </ul>
-    <a href="/journal" class="link">저널에서 모두 보기</a>
+    <InterestCTA fromSection="intro" />
+    <a href="/journal" class="link link-secondary">저널에서 모두 보기</a>
   </section>
+
+  <div class="bottom-whitespace" aria-hidden="true"></div>
 </Layout>
 
 <style>
@@ -31,36 +35,57 @@ import Layout from '../layouts/Layout.astro';
   }
   .tagline {
     color: var(--color-muted);
-    margin: 0 0 1.5rem;
+    margin: 0 0 0.25rem;
     max-width: 36ch;
   }
-  .cta {
-    display: inline-block;
-    padding: 0.6rem 1.2rem;
-    background: var(--color-text);
-    color: var(--color-bg);
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: 500;
-  }
-  .cta:hover {
-    opacity: 0.9;
+  .tagline-sub {
+    color: var(--color-muted);
+    margin: 0;
+    max-width: 40ch;
+    font-size: 0.95rem;
   }
   .intro h2 {
-    font-size: 1.25rem;
-    margin: 0 0 1rem;
+    font-size: 1.15rem;
+    margin: 0 0 0.75rem;
+    font-weight: 600;
   }
   .generations {
     list-style: none;
     padding: 0;
     margin: 0 0 1.5rem;
+    font-size: 0.9rem;
+    color: var(--color-muted);
   }
   .generations li {
     padding: 0.5rem 0;
     border-bottom: 1px solid var(--color-border);
   }
+  .generations strong {
+    color: var(--color-text);
+  }
   .link {
     color: var(--color-text);
     text-decoration: underline;
   }
+  .link-secondary {
+    font-size: 0.9rem;
+    color: var(--color-muted);
+  }
+  .link-secondary:hover {
+    color: var(--color-text);
+  }
+  .bottom-whitespace {
+    min-height: 3rem;
+  }
 </style>
+
+<script>
+  document.querySelectorAll('[data-cta="interest"]').forEach((el) => {
+    el.addEventListener('click', () => {
+      const from = (el as HTMLElement).dataset.fromSection ?? 'unknown';
+      try {
+        (window as unknown as { posthog?: { capture: (e: string, p: Record<string, string>) => void } }).posthog?.capture('sumi_interest_cta_click', { from_section: from });
+      } catch (_) {}
+    });
+  });
+</script>

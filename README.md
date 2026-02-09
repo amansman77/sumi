@@ -50,12 +50,28 @@
 ```bash
 npm install
 npm run dev
-````
+```
 
 * 랜딩: [http://localhost:4321/](http://localhost:4321/)
+* 유료 의사 확인: [http://localhost:4321/interest](http://localhost:4321/interest)
 * 기록 목록: [http://localhost:4321/journal](http://localhost:4321/journal)
 * 기록 상세: [http://localhost:4321/journal/](http://localhost:4321/journal/)<slug>
 * 소개: [http://localhost:4321/about](http://localhost:4321/about)
+
+**로컬에서 “의사 남기기” 제출까지 테스트하려면** Worker가 필요합니다.
+
+1. **로컬 D1에 테이블 생성** (최초 1회):  
+   `wrangler dev`는 로컬 DB를 쓰므로, remote가 아닌 **local**에 마이그레이션을 적용합니다.  
+   ```bash
+   npx wrangler d1 execute shared-db --local --file=./migrations/0001_interest_leads.sql
+   ```
+2. **로컬에서 Discord 알림 받기** (선택):  
+   Secret은 배포 환경에만 있어서, 로컬에서는 `.dev.vars`에 웹훅 URL을 넣어야 합니다.  
+   `.dev.vars.example`을 참고해 `.dev.vars`를 만들고 `DISCORD_WEBHOOK_URL=웹훅URL` 한 줄을 추가하세요.
+3. 터미널 1: `npm run build && npx wrangler dev` (API 서버가 8787에서 동작)
+4. 터미널 2: `npm run dev` (Astro가 4321에서 동작하며 `/api` 요청을 8787로 프록시)
+
+브라우저는 [http://localhost:4321](http://localhost:4321) 로 접속해 사용하면 됩니다.
 
 ## 빌드
 
@@ -86,7 +102,10 @@ Cloudflare Pages 배포 시 **Environment variables**에서 `SITE_URL`을 설정
 
    * Build command: `npm run build`
    * Build output directory: `dist`
+   * Deploy command (필수인 경우): `npx wrangler deploy`
    * Root directory: (프로젝트 루트면 비워 둠)
+
+   `/api/interest`(유료 의사 확인 폼 저장)를 쓰려면 [DEPLOYMENT.md](./DEPLOYMENT.md)의 **D1** 설정을 먼저 완료한 뒤 배포하세요.
 
 3. **환경 변수**
 

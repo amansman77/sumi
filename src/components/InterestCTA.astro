@@ -1,0 +1,41 @@
+---
+interface Props {
+  fromSection?: string;
+}
+const { fromSection = 'intro' } = Astro.props;
+---
+
+<div class="interest-cta" data-from-section={fromSection}>
+  <a href="/interest" class="cta-primary" data-cta="interest" data-from-section={fromSection}>
+    이 이완을 직접 받아보고 싶으신가요?
+  </a>
+  <p class="cta-helper">
+    지금은 예약이나 결제가 아닙니다.<br />
+    유료로 받아볼 의사가 있는지만 확인하고 있어요.
+  </p>
+</div>
+
+<style>
+  .interest-cta {
+    margin: 2.5rem 0 2rem;
+  }
+  .cta-primary {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    background: var(--color-text);
+    color: var(--color-bg);
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+  .cta-primary:hover {
+    opacity: 0.9;
+  }
+  .cta-helper {
+    margin: 0.5rem 0 0;
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    max-width: 36ch;
+    line-height: 1.5;
+  }
+</style>

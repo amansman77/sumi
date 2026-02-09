@@ -1,7 +1,20 @@
-# Cloudflare Workers / Pages — 정적 에셋만 배포 (Astro dist)
-# Deploy command: npx wrangler deploy
+# Sumi: 정적 사이트 + /api/interest
+# 배포: npm run build && npx wrangler deploy
+
 name = "sumi"
 compatibility_date = "2026-02-09"
+main = "worker/index.ts"
 
 [assets]
 directory = "./dist"
+
+# Discord 알림 (선택): 신청 시 웹훅으로 알림
+# 설정: npx wrangler secret put DISCORD_WEBHOOK_URL
+# (Discord 서버 → 채널 설정 → 연동 → 웹후크 → URL 복사)
+
+# D1: shared-db, 테이블 prefix su (su_interest_leads)
+# 마이그레이션: npx wrangler d1 execute shared-db --remote --file=./migrations/0001_interest_leads.sql
+[[d1_databases]]
+binding = "DB"
+database_name = "shared-db"
+database_id = "894124e2-8236-4647-a3a0-bc8674865889"

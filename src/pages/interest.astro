@@ -1,0 +1,294 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="유료로 받아볼 의사가 있으신가요?" description="지금은 수요를 확인하는 단계입니다. 부담 없이 선택해 주세요.">
+  <article class="interest-page">
+    <h1>유료로 받아볼 의사가 있으신가요?</h1>
+    <p class="lead">지금은 수요를 확인하는 단계입니다. 부담 없이 선택해 주세요.</p>
+
+    <div id="form-container">
+      <form id="interest-form" class="interest-form" novalidate>
+        <p class="privacy-note">남긴 정보는 연락 목적 외에는 사용하지 않습니다.</p>
+
+        <label class="field">
+          <span class="label">이름 (선택)</span>
+          <input type="text" name="name" maxlength="50" autocomplete="name" />
+        </label>
+
+        <label class="field">
+          <span class="label">연락처 (선택)</span>
+          <input type="text" name="contact" maxlength="100" autocomplete="tel" placeholder="전화번호 또는 이메일" />
+          <span class="hint">연락처는 선택입니다. 남기면 필요할 때만 연락드릴게요.</span>
+        </label>
+
+        <fieldset class="field">
+          <legend class="label">관심 부위 (최소 1개 선택)</legend>
+          <label class="checkbox-label"><input type="checkbox" name="interest_parts" value="CALF" /> 종아리</label>
+          <label class="checkbox-label"><input type="checkbox" name="interest_parts" value="FOOT" /> 발바닥/발</label>
+          <span id="interest_parts_error" class="error" aria-live="polite" hidden></span>
+        </fieldset>
+
+        <fieldset class="field">
+          <legend class="label">유료로 받아볼 의사가 있으신가요?</legend>
+          <label class="radio-label"><input type="radio" name="willing_to_pay" value="true" required /> 있다</label>
+          <label class="radio-label"><input type="radio" name="willing_to_pay" value="false" /> 없다</label>
+        </fieldset>
+
+        <label class="field">
+          <span class="label">메시지 (선택)</span>
+          <textarea name="message" maxlength="500" rows="3" placeholder="지금 몸 상태나 원하는 느낌을 간단히 적어주세요. (선택)"></textarea>
+        </label>
+
+        <label class="field consent">
+          <input type="checkbox" name="consent_contact" value="true" />
+          <span>연락 받아도 괜찮아요</span>
+        </label>
+
+        <div class="honeypot" aria-hidden="true">
+          <label>회사명 (비워 두세요)</label>
+          <input type="text" name="company" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <button type="submit" class="submit-btn" id="submit-btn">의사 남기기</button>
+      </form>
+    </div>
+
+    <div id="success-panel" class="success-panel" hidden>
+      <p class="success-message">남겨주셔서 감사합니다. 확인 후 필요할 때만 연락드릴게요.</p>
+      <a href="/journal" class="cta-link">기록 보기</a>
+    </div>
+
+    <div id="error-panel" class="error-panel" hidden>
+      <p class="error-message" id="error-message"></p>
+      <button type="button" class="retry-btn" id="retry-btn">다시 시도</button>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .interest-page {
+    max-width: 480px;
+  }
+  .lead {
+    color: var(--color-muted);
+    margin: 0 0 1.5rem;
+  }
+  .privacy-note {
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    margin: 0 0 1rem;
+  }
+  .field {
+    display: block;
+    margin-bottom: 1.25rem;
+  }
+  .label, legend.label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.35rem;
+  }
+  .field input[type="text"],
+  .field input[type="tel"],
+  .field textarea {
+    width: 100%;
+    padding: 0.5rem 0.6rem;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 1rem;
+  }
+  .field textarea {
+    resize: vertical;
+  }
+  .hint {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    margin-top: 0.25rem;
+  }
+  .checkbox-label, .radio-label {
+    display: block;
+    margin: 0.35rem 0;
+    cursor: pointer;
+  }
+  .checkbox-label input, .radio-label input {
+    margin-right: 0.5rem;
+  }
+  .consent {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .error {
+    color: #c00;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+  }
+  .submit-btn {
+    padding: 0.6rem 1.2rem;
+    background: var(--color-text);
+    color: var(--color-bg);
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .submit-btn:hover {
+    opacity: 0.9;
+  }
+  .submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .success-panel, .error-panel {
+    margin-top: 1.5rem;
+  }
+  .success-message {
+    margin: 0 0 1rem;
+  }
+  .cta-link {
+    color: var(--color-text);
+    text-decoration: underline;
+    font-weight: 500;
+  }
+  .retry-btn {
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    cursor: pointer;
+  }
+</style>
+
+<script>
+  const FORM = document.getElementById('interest-form') as HTMLFormElement;
+  const FORM_CONTAINER = document.getElementById('form-container')!;
+  const SUCCESS_PANEL = document.getElementById('success-panel')!;
+  const ERROR_PANEL = document.getElementById('error-panel')!;
+  const ERROR_MESSAGE = document.getElementById('error-message')!;
+  const INTEREST_PARTS_ERROR = document.getElementById('interest_parts_error')!;
+  const SUBMIT_BTN = document.getElementById('submit-btn') as HTMLButtonElement;
+  const RETRY_BTN = document.getElementById('retry-btn')!;
+
+  const INTEREST_PARTS = ['CALF', 'FOOT'] as const;
+
+  function captureCtaClick(fromSection: string) {
+    try {
+      (window as unknown as { posthog?: { capture: (e: string, p: Record<string, unknown>) => void } }).posthog?.capture('sumi_interest_cta_click', { from_section: fromSection });
+    } catch (_) {}
+  }
+
+  function captureSubmit(props: { willing_to_pay: boolean; interest_parts: string[] }) {
+    try {
+      (window as unknown as { posthog?: { capture: (e: string, p: Record<string, unknown>) => void } }).posthog?.capture('sumi_interest_submit', props);
+    } catch (_) {}
+  }
+
+  function captureSubmitSuccess() {
+    try {
+      (window as unknown as { posthog?: { capture: (e: string) => void } }).posthog?.capture('sumi_interest_submit_success');
+    } catch (_) {}
+  }
+
+  function captureSubmitError() {
+    try {
+      (window as unknown as { posthog?: { capture: (e: string) => void } }).posthog?.capture('sumi_interest_submit_error');
+    } catch (_) {}
+  }
+
+  function getPayload(): Record<string, unknown> {
+    const formData = new FormData(FORM);
+    const interestParts = formData.getAll('interest_parts') as string[];
+    const willing = formData.get('willing_to_pay');
+    const payload: Record<string, unknown> = {
+      name: (formData.get('name') as string)?.trim() || undefined,
+      contact: (formData.get('contact') as string)?.trim() || undefined,
+      interest_parts: interestParts.filter((v) => INTEREST_PARTS.includes(v as typeof INTEREST_PARTS[number])),
+      willing_to_pay: willing === 'true',
+      message: (formData.get('message') as string)?.trim() || undefined,
+      consent_contact: formData.get('consent_contact') === 'true',
+      company: formData.get('company') as string,
+      utm_source: new URLSearchParams(window.location.search).get('utm_source') ?? undefined,
+      utm_medium: new URLSearchParams(window.location.search).get('utm_medium') ?? undefined,
+      utm_campaign: new URLSearchParams(window.location.search).get('utm_campaign') ?? undefined,
+      referrer: document.referrer || undefined,
+      page_path: window.location.pathname,
+    };
+    return payload;
+  }
+
+  function validate(): boolean {
+    const parts = (FORM.querySelectorAll('input[name="interest_parts"]:checked') as NodeListOf<HTMLInputElement>).length;
+    if (parts < 1) {
+      INTEREST_PARTS_ERROR.textContent = '관심 부위를 최소 1개 선택해 주세요.';
+      INTEREST_PARTS_ERROR.hidden = false;
+      return false;
+    }
+    INTEREST_PARTS_ERROR.hidden = true;
+    const willing = FORM.querySelector('input[name="willing_to_pay"]:checked');
+    if (!willing) {
+      return false;
+    }
+    return true;
+  }
+
+  async function submitForm() {
+    if (!validate()) return;
+    const payload = getPayload();
+    if (payload.company) {
+      FORM_CONTAINER.hidden = true;
+      SUCCESS_PANEL.hidden = false;
+      return;
+    }
+    delete payload.company;
+    captureSubmit({ willing_to_pay: payload.willing_to_pay as boolean, interest_parts: payload.interest_parts as string[] });
+    SUBMIT_BTN.disabled = true;
+    ERROR_PANEL.hidden = true;
+    try {
+      const res = await fetch('/api/interest', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || `서버 오류 (${res.status})`);
+      }
+      const data = (await res.json()) as { id?: string };
+      captureSubmitSuccess();
+      FORM_CONTAINER.hidden = true;
+      SUCCESS_PANEL.hidden = false;
+    } catch (e) {
+      captureSubmitError();
+      ERROR_MESSAGE.textContent = e instanceof Error ? e.message : '제출에 실패했습니다. 다시 시도해 주세요.';
+      ERROR_PANEL.hidden = false;
+    } finally {
+      SUBMIT_BTN.disabled = false;
+    }
+  }
+
+  FORM?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    submitForm();
+  });
+
+  RETRY_BTN?.addEventListener('click', () => {
+    ERROR_PANEL.hidden = true;
+  });
+
+  FORM?.querySelectorAll('input[name="interest_parts"]').forEach((el) => {
+    el.addEventListener('change', () => {
+      INTEREST_PARTS_ERROR.hidden = true;
+    });
+  });
+</script>
