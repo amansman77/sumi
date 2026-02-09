@@ -1,0 +1,7 @@
+# Cloudflare Workers / Pages — 정적 에셋만 배포 (Astro dist)
+# Deploy command: npx wrangler deploy
+name = "sumi"
+compatibility_date = "2026-02-09"
+
+[assets]
+directory = "./dist"

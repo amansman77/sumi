@@ -24,9 +24,11 @@
 
 | 항목 | 값 |
 |------|-----|
-| Build command | `npm run build` |
+| Build command | `npm run build` **만** 사용 |
 | Build output directory | `dist` |
 | Root directory | (비워 둠) |
+
+**Deploy command가 필수인 경우:** `npx wrangler deploy` 로 두고, 프로젝트 루트의 `wrangler.toml`에서 `assets.directory = "./dist"` 가 설정되어 있는지 확인하세요. (이 설정이 있으면 빌드된 `dist`만 정적 에셋으로 배포됩니다.)
 
 ### 3. 환경 변수
 
