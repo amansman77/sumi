@@ -1,8 +1,10 @@
 ---
 title: 발등 스트레칭이 유독 시원한 이유 | 발등이 당길 때 몸에서 일어나는 일
 description: 발등 스트레칭이 특히 시원하게 느껴지는 이유는 단순한 유연성 문제가 아니다. 발등이 당길 때 신경계와 긴장 패턴에서 어떤 변화가 일어나는지 깊이 있게 설명한다.
-pubDate: 2026-02-24
-category: body-pattern
+date: 2026-02-24
+category: women
+slug: why-foot-instep-stretch-feels-so-good
+draft: false
 tags: [발등스트레칭, 발목스트레칭, 긴장완화, 신경계안정, 호흡패턴, 숨이]
 ---
 
